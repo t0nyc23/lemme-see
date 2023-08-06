@@ -24,7 +24,7 @@ would copy-paste a txt file inside a cherrytree file...or something like that.
 Currently the sources that will be used are:
 1. Shodan's [internetdb API](https://internetdb.shodan.io/)
 2. [CentralOps](https://centralops.net/) for IP/DNS/WHOIS lookups, and more
-3. [Toolsyep](https://toolsyep.com/en/webpage-to-plain-text) to check for a robots.txt
+3. [Toolsyep](https://toolsyep.com/en/webpage-to-plain-text/) to check for a robots.txt
 
 ### Description for flags
 The target URL option (-u) is required (obviuslly), and it has to be a valid domain name
