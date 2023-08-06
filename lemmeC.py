@@ -3,7 +3,6 @@ import sys
 import requests
 import argparse
 
-from termcolor import colored
 from utils.robots import get_robots
 from utils.centralops import centralops_query, is_ipv4
 from utils.internetdb import internetdb_query
