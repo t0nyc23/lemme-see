@@ -2,7 +2,7 @@
 
 ### Installing prerequisites
 ```
-$ sudo apt install python3-bs4 python3-jinja2 python3-termcolor python3-requests
+$ sudo apt install python3-bs4 python3-jinja2 python3-requests
 ```
 
 ### Options list
