@@ -1,6 +1,6 @@
 # Lemme See
 
-![demovideo](https://github.com/n0ns0n/lemme-see/assets/119656556/ebef8b5e-4cfa-4eab-aba7-7258d8ce9aaf)
+https://github.com/n0ns0n/lemme-see/assets/119656556/f080e07d-93cd-4714-82c2-90e2a0687c85
 
 ### Installing prerequisites
 ```
