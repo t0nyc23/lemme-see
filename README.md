@@ -2,7 +2,11 @@
 
 https://github.com/n0ns0n/lemme-see/assets/119656556/f080e07d-93cd-4714-82c2-90e2a0687c85
 
-### Installing prerequisites
+### Installing prerequisites (Windows)
+```
+> pip3 install bs4 jinja2 requests
+```
+### Installing prerequisites (Debian based)
 ```
 $ sudo apt install python3-bs4 python3-jinja2 python3-requests
 ```
