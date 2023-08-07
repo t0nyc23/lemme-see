@@ -1,5 +1,7 @@
 # Lemme See
 
+![demovideo](https://github.com/n0ns0n/lemme-see/assets/119656556/ebef8b5e-4cfa-4eab-aba7-7258d8ce9aaf)
+
 ### Installing prerequisites
 ```
 $ sudo apt install python3-bs4 python3-jinja2 python3-requests
