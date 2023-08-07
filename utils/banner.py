@@ -27,6 +27,7 @@ banner = """
 ~ -------- Lemme See || version: -300 || by @n0n ---------- ~
 ============================================================="""
 
+# Remove the eye ascii art for windows, cause it's not printed correctly
 if not os.name == "nt":
   banner = bannereye + banner
 
