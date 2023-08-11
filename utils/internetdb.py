@@ -20,6 +20,7 @@ def format_list(list2format):
 def internetdb_query(get_request, addresses):
 	result_txt  = f"\nQuery results from Shodan's InternedDB API\n"
 	for target in addresses:
+		print(f"[+] Checking target addess: {target} on InternedDB.")
 		url = "https://internetdb.shodan.io/" + target
 		query_results = get_request(url).json()
 		result_txt += f"\n{'='*42}\nInternetdb Query:\n  {url}\n"

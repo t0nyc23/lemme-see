@@ -1,6 +1,6 @@
 def get_robots(url, get_request):
 	headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.78 Safari/537.36',}
-	print("[+] Checking for a robots.txt file...")
+	print(f"[+] Checking for a robots.txt file on target: {url}...")
 	toolsyep = "https://toolsyep.com/en/webpage-to-plain-text/?u="
 	url = url.replace("/", "%2F").replace(":", "%3A") + "%2Frobots.txt"
 	target_url = f"{toolsyep}{url}"

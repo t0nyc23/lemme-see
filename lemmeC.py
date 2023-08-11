@@ -6,28 +6,25 @@ import argparse
 from utils.robots import get_robots
 from utils.centralops import centralops_query, is_ipv4
 from utils.internetdb import internetdb_query
-from utils.checks import check_http_scheme, check_host_alive
+from utils.passif import passif_scan
 from utils.banner import banner, help_message, help_small
-from utils.filesystem import create_txt_report_dir, delete_dir, write_txt_files, generate_html_report
+from utils.utilities import Checks, Filesystem
 
 def lemmec(options):
-	get_request   = requests.get
-	target        = options["target_url"]
-	output_file   = options["output_file"]
-	template_file = options["template_file"]
-	create_txt_report_dir()
-	print(f"[+] Doing checks for supplied target: {target}")
-	target_url = check_http_scheme(target)
-	print(f"[+] Checking target on CentralOps...", end="")
+	get_request			= requests.get
+	target_url			= Checks.check_http_scheme(options['target_url'])
+	output_file_name	= Checks.check_output_file_name(options['output_file'])
+	template_file_name	= Checks.check_template_name(options['template_file'])
+	filesystem_util		= Filesystem(output_file_name, template_file_name)
+	
+	print(f"[+] Lemme see target: {target_url}")
 	centralops_results_txt, centralops_addresses_list = centralops_query(target_url, get_request)
-	if not centralops_results_txt:
-		print(f"[-] There was a problem with: {target_url} while using CentralOps. Exiting...")
-		sys.exit(-1)
 	internetdb_results_txt = internetdb_query(get_request, centralops_addresses_list)
 	robots_file = get_robots(target_url, get_request)
-	write_txt_files(robots=robots_file, centralops=centralops_results_txt, internetdb=internetdb_results_txt)
-	generate_html_report(template_file, output_file)
-	delete_dir("txt_reports")
+	subdomains = passif_scan(target_url, get_request)
+	
+	filesystem_util.write_txt_files(robots=robots_file, centralops=centralops_results_txt, internetdb=internetdb_results_txt, subdomains=subdomains)
+	filesystem_util.generate_html_report()
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(add_help = False)

@@ -1,8 +1,7 @@
-from bs4 import BeautifulSoup
-#import requests
-import time
-import sys
 import re
+import sys
+import time
+from bs4 import BeautifulSoup
 
 def is_ipv4(ip_str):
     # Regular expression for IPv4 address
@@ -18,27 +17,21 @@ def is_ipv6(ip_str):
 def address_lookup(soup):
 	addresses_lookup_txt = ""
 	canonical_name = soup.find('td', string='canonical name')
-
 	if canonical_name:
 	    canonical_name = canonical_name.find_next('td').find('a').text.strip()
 	    addresses_lookup_txt += f"{'='*80}\n\nAddress Lookup\n{'-'*15}\nCanonical Name: {canonical_name}"
-
 	addresses = soup.find('td', string='addresses')
 	if addresses:
 	    addresses = addresses.find_next('td').find_all('span', class_='ipaddr')
 	    for address in addresses:
 	    	addr_string = f"{addresses}"
 	    	addresses_list = list(addr_string.replace('[<span class="ipaddr">', '').replace('<br/></span>]', '').strip().split("<br/>"))
-
-	    
 	    for ip in addresses_list:
 	    	if is_ipv4(ip):
 	    		addresses_lookup_txt += f"\nIPv4 Address: {ip}"
 	    	elif is_ipv6(ip):
 	    		addresses_lookup_txt += f"\nIPv6 Address: {ip}"
 	    		addresses_list.remove(ip)
-
-	
 	return addresses_list, addresses_lookup_txt
 
 # Domain Whois Record
@@ -106,6 +99,7 @@ def generate_txt_report(html_report):
 	return txt_report, addresses_list
 
 def centralops_query(target, get_request):
+	print(f"[+] Checking {target} on CentralOps...", end="")
 	opts = "&dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true"
 	cops = "https://centralops.net/co/DomainDossier.aspx?addr=" + target + opts
 	c_headers = {
@@ -124,16 +118,13 @@ def centralops_query(target, get_request):
 		'Accept-Language': 'en-US,en;q=0.9',
 		'Connection': 'close'
 	}
-	#r = requests.get(cops, headers=headers)
-	r = get_request(cops, headers=c_headers)
+	html_report = get_request(cops, headers=c_headers).text
 	print("wait a bit.")
 	time.sleep(10)
-	html_report = r.text
 
 	if "Could not find an IP address for this domain name." in html_report:
-		addresses_list = False
-		txt_report = False
-		return txt_report ,addresses_list
+		print(f"[-] There was a problem with: {target} while using CentralOps. Exiting...")
+		sys.exit(-1)
 	else:
 		txt_report, addresses_list = generate_txt_report(html_report)
 		return txt_report ,addresses_list
