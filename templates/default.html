@@ -1,178 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lemme See Report</title>
+    <style>
+        body {
+          margin: 0;
+          font-family: Verdana, Helvetica, sans-serif;
+        }
+
+        #main-box {
+          margin-left: 25%;
+          padding: 1px 16px;
+        }
+
+        pre {
+          padding: 10px 10px 10px 10px;
+          white-space: pre-wrap;
+          margin: 0;
+        }
+
+        #sidebar {
+          font-size: 21px;
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          width: 25%;
+          background-image: linear-gradient(#001F54, #1282A2);
+          position: fixed;
+          height: 100%;
+          overflow: auto;
+        }
+
+        .tab {
+          display: block;
+          color: #f1f1f1;
+          padding: 8px 16px;
+          text-decoration: none;
+        }
+
+        .tab.active {
+          background-image: linear-gradient(#034078, #1282A2);
+          color: white;
+          box-shadow: 0px 0px 60px #0A1128;
+          border-radius: 10px;
+          margin: 10px;
+          margin-left: 20px;
+        }
+
+        .tab:hover:not(.active) {
+          background: #034078;
+          color: white;
+        }
+
+        .file-content {display: none;}
+
+        .file-content.active {
+          box-shadow: 0px 0px 60px #0A1128;
+          background-color: #FEFCFB;
+          color: #0A1128;
+          height: 53rem;
+          margin: 4% 5%;
+          overflow-y: auto;
+          font-size: 19px;
+          line-height: 1.6;
+          border-radius: 7px;
+          display: block;
+        }
+
+        .file-content ::selection {
+          color: #4A4A4A;
+          background-color: #FFCBA4;
+        }
+
+        #seperator {background: none;}
+    </style>
+
     <script>
       function toggleTab(tab) {
-        const tabstate = document.getElementById(tab);
-        if (tabstate) {
-          tabstate.classList.toggle('active');
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach((t) => {
+          t.classList.remove('active');
+        });
+        const tabState = document.getElementById(tab);
+        if (tabState) {
+          tabState.classList.add('active');
         }
       }
 
       function toggleFile(file) {
+        const fileContents = document.querySelectorAll('.file-content');
+        fileContents.forEach((f) => {
+          f.classList.remove('active');
+        });
         const fileContent = document.getElementById(file);
         if (fileContent) {
-          fileContent.classList.toggle('active');
+          fileContent.classList.add('active');
         }
       }
-
-      window.onscroll = function() {
-        const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-          scrollToTopBtn.classList.add('show');
-        } else {
-          scrollToTopBtn.classList.remove('show');
-        }
-      };
-
-      // Scroll to top when the button is clicked
-      function scrollToTop() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      }
-  </script>
-  <style>
-
-    /*
-    https://coolors.co/palette/0a1128-001f54-034078-1282a2-fefcfb
-    https://www.magicpattern.design/tools/css-backgrounds
-    */
-    html {
-      height: 100%;
-      background-image: linear-gradient(#001F54, #1282A2, #001F54);
-      background-attachment: fixed;
-    }
-
-    /*main-body    */
-    body {
-      font-family: Verdana, Helvetica, sans-serif;
-      letter-spacing: 1.5px;
-      width: auto;
-      max-width: 100rem;
-      margin: auto;
-      padding: 17px;
-    }
-
-    .main-body pre {
-      font-family: Verdana, Helvetica, sans-serif;
-      padding: 10px 10px 10px 10px;
-      white-space: pre-wrap;
-      margin: 0;
-    }
-
-    /* Basic styling for tabs */
-    .tab {
-      text-transform: uppercase;      
-      font-size: 17px;
-      text-align: center;
-      padding: 10px;
-      background: #0A1128;
-      color: #FEFCFB;
-      border-radius: 5px;
-      margin-top: 5px;
-    }
-
-
-    .tab.active, .tab:hover {
-      background-color: #080E20;
-      color: #fff;
-    }
-
-    .tab::selection {
-      background-color: transparent;
-    }
-
-    /* Hide all text content by default */
-    .file-content {
-      display: none;
-      margin-top: 5px;
-    }
-
-    /* Show the selected text content */
-    .file-content.active {
-      box-shadow: 0px 0px 60px #000;
-      height: 42em;
-      padding: 20px;
-      margin: 10px 0;
-      color: #0A1128;
-      display: block;
-      font-size: 19px;
-      line-height: 1.6;
-      overflow-y: auto;
-      border-radius: 5px;
-      background-color: #FEFCFB;
-      border: 1px solid #1282A2;
-    }
-
-    .file-content ::selection {
-      color: #4A4A4A; /* Custom text color for selected text */
-      background-color: #FFCBA4; /* Custom background color for selected text */
-    }
-
-    #scroll-to-top-btn {
-      bottom: 30px;
-      right: 30px;
-      border: none;
-      color: #FEFCFB;
-      display: none;
-      cursor: pointer;
-      position: fixed;
-      padding: 10px 20px;
-      border-radius: 5px;
-      background-color: #1282A2;
-    }
-
-    /* Show the scroll-to-top button when the user scrolls down */
-    #scroll-to-top-btn.show {
-      display: block;
-    }
-
-  </style>
+    </script>
 </head>
 <body>
-  <button onclick="scrollToTop()" id="scroll-to-top-btn">Go to Top</button>
-  <br>
-  <!-- Text content containers -->
-  <div class="main-body">
-    <div class="tab-container">
-      <div id="centralops-tab" class="tab" onclick="toggleFile('centralops');toggleTab('centralops-tab')">CentralOPS</div>
+
+    <ul id="sidebar">
+      <p id="seperator"></p>
+      <li id="main-tab" class="tab active" onclick="toggleFile('main-contents');toggleTab('main-tab')">Lemme Seeeeee...</li>
+      <li id="centralops-tab" class="tab" onclick="toggleFile('centralops');toggleTab('centralops-tab')">CentralOps</li>
+      <li id="robots-tab" class="tab" onclick="toggleFile('robots');toggleTab('robots-tab')">Robots.txt</li>
+      <li id="internetdb-tab" class="tab" onclick="toggleFile('internetdb');toggleTab('internetdb-tab')">InternetDB</li>
+      <li id="subdomains-tab" class="tab" onclick="toggleFile('subdomains');toggleTab('subdomains-tab')">Subdomains</li>
+    </ul>
+
+    <div id="main-box">
+
+      <div class="file-content active" id="main-contents">  
+        <pre>
+=============================================================
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠛⢉⣉⣠⣤⣤⣤⣤⣤⣭⣉⡙⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⢛⣁⣤⣴⣾⣿⡿⠿⠿⠟⠛⠛⠛⠻⠿⠿⢿⣿⣶⣬⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣋⣤⣾⣿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠈⠉⠛⠻⢿⣶⣬⣝⡛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣋⣴⣿⡿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠿⠛⠓⣦⣄⠀⠀⠀⠈⠙⠻⣿⣷⣬⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣡⣾⡿⠛⢁⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⢸⣿⣷⢠⡀⠀⠀⠀⠀⠉⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⡿⠿⣛⣫⣤⡾⠟⠉⣀⣼⣿⣿⠀⠀⣄⣀⣇⢰⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⢸⣷⡄⠀⣶⣤⣤⣀⡀⠈⠛⢿⣭⣙⢿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⢀⣤⣾⣿⣿⣿⣿⡄⠀⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⡿⣸⣿⠇⢰⣿⣿⣿⣿⣿⣷⣦⠄⣹⣿⣧⢹⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⡿⠿⠋⢩⣴⣾⣿⣿⣿⣿⣿⣿⣿⣷⡀⠹⣿⣿⣿⣿⣿⣿⣦⣀⡀⠀⠀⠀⢀⣠⣾⣿⣿⣿⣳⣿⠏⢠⣿⣿⣿⣿⣿⣿⡿⢋⣼⣿⣿⠏⣸⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⡏⠀⠾⢧⡀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠘⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⣰⣿⣿⣿⣿⣿⡿⢋⣤⣮⣿⠟⣣⣾⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣶⣶⣶⣦⣤⣄⡙⠛⢿⣿⣿⣿⣿⣿⣿⣿⣷⣤⡈⠙⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⣠⣾⣿⣿⣿⡿⠟⢁⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⣿⢿⣷⣆⡈⠙⠿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣄⣀⣉⠉⠛⠛⠛⠛⠉⣁⣠⣴⣿⣿⣿⣿⠿⠋⢀⣼⣿⠿⢛⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣦⣍⠻⢷⣦⡝⠻⢶⣄⡀⠈⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⣠⣾⠟⢋⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡙⣿⣿⣦⡙⠿⣦⣄⡀⠈⠉⠛⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁⢀⣤⡾⠟⣡⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⡻⣿⣿⣷⣌⠛⠿⣷⣶⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣶⡶⠛⢉⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣉⠙⠛⠻⠿⠿⣿⣿⠿⠿⠿⠿⠿⠛⠛⣁⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣦⣤⣤⣤⣤⣤⣤⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+=============================================================
+~          You gave me more than I ever expected            ~
+~        Can't follow you cause I'm feeling so lone         ~
+=============================================================
+~ -------- Lemme See || version: -300 || by @n0n ---------- ~
+=============================================================
+        </pre>
+      </div>
+
       <div class="file-content" id="centralops">
         <pre>
-          <!-- Contents here -->
-          {{ centralops }}
+{{ centralops }}
         </pre>
       </div>
-    </div>
-    <div class="tab-container">
-      <div id="robots-tab" class="tab" onclick="toggleFile('robots.txt');toggleTab('robots-tab')">robots.txt</div>
-      <div class="file-content" id="robots.txt">
+
+      <div class="file-content" id="robots">
         <pre>
-          <!-- Contents here -->
-          {{ robots }}
+{{ robots }}
         </pre>
       </div>
-    </div>
-    <div class="tab-container">
-      <div id="internetdb-tab" class="tab" onclick="toggleFile('internetdb');toggleTab('internetdb-tab')">InternetDB API</div>
+
       <div class="file-content" id="internetdb">
         <pre>
-          <!-- Contents here -->
-          {{ internetdb }}
+{{ internetdb }}
         </pre>
       </div>
-    </div>
-    <div class="tab-container">
-      <div id="subdomains-tab" class="tab" onclick="toggleFile('subdomains');toggleTab('subdomains-tab')">Subdomains</div>
+
       <div class="file-content" id="subdomains">
         <pre>
-          <!-- Contents here -->
-          {{ subdomains }}
+{{ subdomains }}
         </pre>
       </div>
     </div>
-  </div>
 </body>
 </html>
