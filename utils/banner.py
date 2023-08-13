@@ -1,4 +1,5 @@
 import os
+
 bannereye = """=============================================================
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠛⢉⣉⣠⣤⣤⣤⣤⣤⣭⣉⡙⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -21,34 +22,40 @@ bannereye = """=============================================================
 
 banner = """
 =============================================================
-~          You gave me more than I ever expected            ~
-~        Can't follow you cause I'm feeling so lone         ~
-=============================================================
-~ -------- Lemme See || version: -300 || by @n0n ---------- ~
+~ -------- Lemme-See || version: -300 || by @n0n ---------- ~
 ============================================================="""
 
 # Remove the eye ascii art for windows, cause it's not printed correctly
 if not os.name == "nt":
-  banner = bannereye + banner
+    banner = bannereye + banner
 
-help_message = banner + """
+
+help_small = banner + """
 Options list:
-  -u --> target URL to check
-  -h --> prints this help message
-  -o --> (optional) file name for the saved output
-  -t --> (optional) name for the template to use from the templates directory
-  -hh --> show full help message
+  -hh -->  show full help message
+  -h  -->  show small help message
+  -u  -->  target domain name to check
+  -o  -->  (optional) name for the html report
+  -t  -->  (optional) name for the template to use (from the templates directory)
+"""
 
-Description for the script:
-  - Using some OSINT, the tool gathers information for a target. The results will be saved 
-    in .txt files and then they will be parsed to an HTML reporting template. 
-    In essence the .txt results will be formated inside the html the same way that someone
-    would copy-paste a txt file inside a cherrytree file...or something like that.
+help_message = help_small + """
+About Lemme-See:
+  Lemme-See passively collects information for a domain name, utilizing 
+  OSINT. The information gathered from each source, including
+  IP addresses, open ports, subdomains, and more, is saved into text files
+  and compiled into an HTML-formatted report.
   
-  - Currently the sources that will be used are:
-      1. Shodan's internetdb API (https://internetdb.shodan.io/)
-      2. CentralOps for IP/DNS/WHOIS lookups, and more (https://centralops.net/)
-      3. Toolsyep to check for a robots.txt (https://toolsyep.com/en/webpage-to-plain-text)
+Features:
+  - Query https://internetdb.shodan.io/ for ports, vulnerabilities, and more (No API key required)
+  - Check https://centralops.net/ for IP/DNS/WHOIS related information.
+  - Check https://toolsyep.com/en/webpage-to-plain-text/ for a robots.txt
+  - Query https://urlscan.io/ API for subdomains (No API key required)
+  - Check https://crt.sh/ for subdomains
+  - Query http://ci-www.threatcrowd.org/ API for subdomains (No API key required)
+  - Save results in separate text files
+  - Generate a single-page HTML report
+  - Use a custom template for the HTML report
 
 Description for flags:
   - The target URL option (-u) is required (obviuslly), and it has to be a valid domain name
@@ -61,23 +68,14 @@ Description for flags:
   - If no template file is supplied, the script will use the default template located
     in the templates directory. To use a custom template, put such template in
     the respective directory, then just specify the name for the template using -t
-
-Usage examples:
-  $ ./lemmec.py www.example.com
-  $ ./lemmec.py example.com -t /home/user/Desktop/template.thml
-  $ ./lemmec.py http://www.example.com -o example-com_results.html
 """
 
-help_small = banner + """
-Options list:
-  -u --> target URL to check
-  -h --> prints this help message
-  -o --> (optional) file name for the saved output
-  -t --> (optional) name for the template to use from the templates directory
-  -hh --> show full help message
-
+examples = """
 Usage examples:
-  $ ./lemmec.py www.example.com
-  $ ./lemmec.py example.com -t /home/user/Desktop/template.thml
-  $ ./lemmec.py http://www.example.com -o example-com_results.html
+  $ python3 lemmeC.py -u example.com
+  $ python3 lemmeC.py -u example.com -t /home/user/Desktop/template.thml
+  $ python3 lemmeC.py -u http://example.com -o example_results.html
 """
+
+help_small += examples
+help_message += examples

@@ -1,54 +1,43 @@
-# Lemme See
+# Lemme-See quick recon using OSINT
 
-https://github.com/n0ns0n/lemme-see/assets/119656556/f080e07d-93cd-4714-82c2-90e2a0687c85
+![lemme see gif](img/lemmesee.gif)
 
-### Installing prerequisites (Windows)
-```
-> pip3 install bs4 jinja2 requests
-```
-### Installing prerequisites (Debian based)
+# About Lemme-See
+
+"Lemme-See" passively collects information for a domain name, utilizing OSINT.
+The information gathered from each source, including IP addresses, open ports, subdomains, and more, 
+is saved into text files and compiled into an HTML-formatted report.
+
+### Features:
+* Query Shodan's [internetdb API](https://internetdb.shodan.io/) for open ports, vulnerabilities, hostnames, and more (No API key required)
+* Check [CentralOps](https://centralops.net/) for IP/DNS/WHOIS related information.
+* Check [Toolsyep](https://toolsyep.com/en/webpage-to-plain-text/) for a robots.txt
+* Query [Urlscan](https://urlscan.io/) API for subdomains (No API key required)
+* Check [crt.sh](https://crt.sh/) for subdomains
+* Query [Threat Crowd](http://ci-www.threatcrowd.org/) API for subdomains (No API key required)
+* Save results in separate text files
+* Generate a single-page HTML report
+* Use a custom template for the HTML report
+
+### Installing prerequisites (for Debian based systems)
 ```
 $ sudo apt install python3-bs4 python3-jinja2 python3-requests
 ```
 
 ### Options list
 ```
--u --> target URL to check
--h --> prints this help message
--o --> (optional) file name for the saved output
--t --> (optional) name for the template to use from the templates directory
--hh --> show full help message
+-hh  -->  show full help message
+-h   -->  show small help message
+-u   -->  target target domain name to check
+-o   -->  (optional) name for the html report
+-t   -->  (optional) name for the template to use (from the templates directory)
 ```
-
-### Description about the tool
-
-Using some OSINT, the tool gathers information for a target. The results will be saved 
-in .txt files and then they will be parsed to an HTML reporting template. 
-In essence the .txt results will be formated inside the html the same way that someone
-would copy-paste a txt file inside a cherrytree file...or something like that.
-  
-Currently the sources that will be used are:
-1. Shodan's [internetdb API](https://internetdb.shodan.io/)
-2. [CentralOps](https://centralops.net/) for IP/DNS/WHOIS lookups, and more
-3. [Toolsyep](https://toolsyep.com/en/webpage-to-plain-text/) to check for a robots.txt
-
-### Description for flags
-The target URL option (-u) is required (obviuslly), and it has to be a valid domain name
-with or without an HTTP scheme. Just note that if no scheme is supplied,
-the script will default to HTTP://
-
-If no output file name is supplied (-o), the script will use
-a default name with a timestamp that will be saved on the current directory
-  
-If no template file is supplied, the script will use the default template located
-in the templates directory. To use a custom template, put such template in
-the respective directory, then just specify the name for the template using -t
 
 ### Usage examples:
 ```Bash
-$ python3 lemmec.py www.example.com
-$ python3 lemmec.py example.com -t /home/user/Desktop/template.thml
-$ python3 lemmec.py http://www.example.com -o example-com_results.html
+$ python3 lemmeC.py -u target.com
+$ python3 lemmeC.py -u target.com -t /home/user/Desktop/template.thml
+$ python3 lemmeC.py -u http://target.com -o target_results.html
 ```
 
   
