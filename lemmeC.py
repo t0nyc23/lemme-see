@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import os
 import requests
 import argparse
 
@@ -14,7 +15,7 @@ def lemmec(options):
 	get_request			= requests.get
 	target_url			= Checks.check_http_scheme(options['target_url'])
 	output_file_name	= Checks.check_output_file_name(options['output_file'])
-	template_file_name	= Checks.check_template_name(options['template_file'])
+	template_file_name	= options['template_file']
 	filesystem_util		= Filesystem(output_file_name, template_file_name)
 	
 	print(f"[+] Lemme see target: {target_url}")
