@@ -22,6 +22,7 @@ is saved into text files and compiled into an HTML-formatted report.
 ### Installing prerequisites (for Debian based systems)
 ```
 $ sudo apt install python3-bs4 python3-jinja2 python3-requests
+
 ```
 
 ### Options list
@@ -31,13 +32,13 @@ $ sudo apt install python3-bs4 python3-jinja2 python3-requests
 -u   -->  target target domain name to check
 -o   -->  (optional) name for the html report
 -t   -->  (optional) name for the template to use (from the templates directory)
+
 ```
 
 ### Usage examples:
-```Bash
+```
 $ python3 lemmeC.py -u target.com
 $ python3 lemmeC.py -u target.com -t /home/user/Desktop/template.thml
 $ python3 lemmeC.py -u http://target.com -o target_results.html
-```
 
-  
+```
