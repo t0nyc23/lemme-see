@@ -14,9 +14,9 @@ from utils.utilities import Checks, Filesystem
 def lemmec(options):
 	get_request			= requests.get
 	target_url			= Checks.check_http_scheme(options['target_url'])
-	output_file_name	= Checks.check_output_file_name(options['output_file'])
+	output_name	= Checks.check_output_name(options['output_file'])
 	template_file_name	= options['template_file']
-	filesystem_util		= Filesystem(output_file_name, template_file_name)
+	filesystem_util		= Filesystem(output_name, template_file_name)
 	
 	print(f"[+] Lemme see target: {target_url}")
 	centralops_results_txt, centralops_addresses_list = centralops_query(target_url, get_request)
@@ -30,7 +30,7 @@ def lemmec(options):
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(add_help = False)
 	parser.add_argument('-u', dest='target_url', type=str, help='Target URL to check')
-	parser.add_argument('-o', dest='output_file', type=str, help='Output file name')
+	parser.add_argument('-o', dest='output_file', type=str, help='Output file name', default="default")
 	parser.add_argument('-t', dest='template_file', type=str, help='Template file to use')
 	parser.add_argument('-h', '--help', action='store_true')
 	parser.add_argument('-hh', '--help_full', action='store_true')

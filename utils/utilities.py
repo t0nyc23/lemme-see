@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 import jinja2
 import datetime
@@ -24,33 +25,29 @@ class Checks:
 		print(msg)
 		return template
 
-	def check_output_file_name(file_name):
-		if not file_name:
-			timestamp = "{:%Y-%m-%d_%H-%M}".format(datetime.datetime.now())
-			file_name = f"report_{timestamp}.html"
-			file_name = os.path.join(os.path.expanduser("~"), file_name)
-		elif file_name[-5:] != ".html":
-			file_name += ".html"
-		return file_name
+	def check_output_name(dir_name):
+		if dir_name == "default" or os.path.isdir(dir_name):
+			#------MONTH-DAY-YEAR_HOUR:MINUTE:SECOND
+			timestamp = "{:%m-%d-%Y_%H:%M:%S}".format(datetime.datetime.now())
+			dir_name = f"lemme-see_report_{timestamp}"
+			dir_name = os.path.join(os.path.expanduser("~"), dir_name)
+		return dir_name
 	
 class Filesystem:
-	def __init__(self, output_file, template_file):
-		self.STARTING_DIR = os.getcwd()
-		self.HOME = os.path.expanduser("~")
-		self.TXT_REPORT_DIR = os.path.join(self.HOME, "txt_reports")
+	def __init__(self, output_dir, template_file):
+		self.STARTING_DIR          = os.getcwd()
+		self.REPORT_DIR            = os.path.join(self.STARTING_DIR, output_dir)
+		self.REPORT_DIR_TXT        = f"{self.REPORT_DIR}/txt"
 		os.chdir(os.path.dirname(__file__))
-		self.TOOL_HOME = os.path.abspath(os.pardir)
-		self.HTML_TEMPLATES_DIR = os.path.abspath(os.path.join(os.pardir, "templates"))
-		self.HTML_TEMPLATE = template_file
-		self.FINAL_REPORT_NAME = output_file
-		self.create_txt_report_dir()
+		self.TOOL_HOME             = os.path.abspath(os.pardir)
+		self.HTML_TEMPLATES_DIR    = os.path.abspath(os.path.join(os.pardir, "templates"))
+		self.HTML_TEMPLATE         = template_file
+		self.FINAL_REPORT_NAME     = f"{output_dir}.html"
+		self.create_report_dir()
 
-	def create_txt_report_dir(self):
-		try:
-			os.mkdir(self.TXT_REPORT_DIR)
-		except FileExistsError:
-			self.delete_dir(self.TXT_REPORT_DIR)
-			os.mkdir(self.TXT_REPORT_DIR)
+	def create_report_dir(self):
+		os.mkdir(self.REPORT_DIR)
+		os.mkdir(self.REPORT_DIR_TXT)
 
 	def delete_dir(self, directory):
 		try:
@@ -62,11 +59,12 @@ class Filesystem:
 
 	def write_txt_files(self, **kwargs):
 		for filename, contents in kwargs.items():
-			output_file = f"{self.TXT_REPORT_DIR}/{filename}.txt"
+			output_file = f"{self.REPORT_DIR_TXT}/{filename}.txt"
 			with open(output_file, 'w') as file2write:
 				file2write.write(contents)
 
-	def write_report_file(self, file2write):
+	def write_report_file(self):
+		file2write = f"{self.REPORT_DIR}/lemme-see_report.html"
 		msg = f"[+] Saving to {file2write}"
 		print(msg)
 		try:
@@ -74,7 +72,7 @@ class Filesystem:
 				final_report.write(self.report)
 		except FileNotFoundError:
 			print(f"[Warnning] Could not write to: {self.FINAL_REPORT_NAME}")
-			default_name = Checks.check_output_file_name(None)
+			default_name = Checks.check_output_name("default")
 			msg = f"[+] Saving to {default_name} instead..."
 			self.write_report_file(default_name)
 
@@ -83,14 +81,13 @@ class Filesystem:
 		environment = jinja2.Environment(loader=jinja2.FileSystemLoader(self.HTML_TEMPLATES_DIR))
 		html_template_check = Checks.check_template_name(self.HTML_TEMPLATES_DIR, self.HTML_TEMPLATE)
 		html_template = environment.get_template(html_template_check)
-		txt_files = os.listdir(self.TXT_REPORT_DIR)
+		txt_files = os.listdir(self.REPORT_DIR_TXT)
 		for file in txt_files:
-			file_path = os.path.join(self.TXT_REPORT_DIR, file)
+			file_path = os.path.join(self.REPORT_DIR_TXT, file)
 			jinja_name = file.replace(".txt", "")
 			with open(file_path) as file2read:
 				txt_contents = file2read.read()
 				contents[jinja_name] = txt_contents
 		self.report = html_template.render(contents)
 		os.chdir(self.STARTING_DIR)
-		self.write_report_file(self.FINAL_REPORT_NAME)
-		self.delete_dir(self.TXT_REPORT_DIR)
+		self.write_report_file()
