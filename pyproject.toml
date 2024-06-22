@@ -22,14 +22,10 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/t0nyc23/lemme-see"
 
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["img"]
+
 [project.scripts]
 lemmeC = "lemmeC.__main__:main"
 
-[tool.setuptools]
-packages = ["lemmeC"]
-
-[tool.setuptools.package-data]
-lemmeC = ["templates/*.html"]
-
-[tool.setuptools.exclude-package-data]
-lemmeC = ["img/*"]
