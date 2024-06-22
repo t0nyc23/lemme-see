@@ -24,3 +24,12 @@ dependencies = [
 
 [project.scripts]
 lemmeC = "lemmeC.__main__:main"
+
+[tool.setuptools]
+packages = ["lemmeC"]
+
+[tool.setuptools.package-data]
+lemmeC = ["templates/*.html"]
+
+[tool.setuptools.exclude-package-data]
+lemmeC = ["img/*"]
