@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lemme See - Report</title>
+        <style>
+ body{ color: #333; font-family: Verdana, Helvetica, sans-serif; font-size: 15px;} .category{ font-style: italic; font-size: 23px; background-color: aliceblue; padding: 10px; color: #333;} #content{ max-width: 1000px; position: relative; margin: auto;} #eye{ display: flex; flex-direction: column; padding-right: 18px; position: relative; justify-content: center; align-items: center; background-color: #1282A2;} .iris{ position: fixed; width: 70px; height: 70px; border: 5px solid #333; background-color: #0077b6; border-radius: 50%; left: 36px; top: 33px;} .iris:before{ content: ""; position: absolute; background-color: #333; border-radius: 50%; width: 40px; height: 40px; top: 22%; left: 22%;} .iris:after{ content: ""; position: absolute; background-color: rgba(255, 255, 255, 0.4); border-radius: 50%; width: 15px; height: 15px; top: 35%; left: 65%; box-shadow: -35px 20px rgba(255, 255, 255, 0.4);} .eyeBall{ width: 150px; height: 150px; background-color: white; border: 5px solid #333; border-radius: 100% 0; box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.3); transform: rotate(45deg); margin-bottom: -15px;} .eyeLid{ margin-top: -15px; margin-bottom: -140px; border-top: 5px solid #333; border-left: 5px solid #333; border-radius: 100% 0; width: 150px; height: 150px; transform: rotate(45deg);} table{ width: 100%; border-collapse: collapse; margin-top: 20px;} th, td{ border: 1px solid #ddd; padding: 8px;} th{ font-size: 18px; font-style: italic; background-color: #f2f2f2; text-align: center;} hr{ color: #333;} #subdomains{ border: #ddd solid 1px; height: 500px; overflow-y: auto;} #subdomains ul{ list-style-type: none; padding: 0; margin: 0;} #subdomains li{ padding: 5px 0 5px 10px;} #subdomains li:nth-child(odd){ background-color: #f3f3f3;} #scandetails{ font-size: 15px; font-style: italic; letter-spacing: 0.5px;} #subdomain-details{ color: #333; font-size: 15px; letter-spacing: 0.5px; font-weight: bold; font-style: italic;} #subdomain-details p{ margin: 10px 10px 2px 0;} #footer{ margin-top: 20px; padding: 15px 0; background: #1282A2; color: #f2f2f2; text-align: center; font-size: 15px; font-weight: 600; letter-spacing: 1px;} a{ font-style: italic; color: aquamarine; text-decoration: none;}
+        </style>
+    </head>
+    <body>
+        <div id="content">
+
+            <header>
+                <div id="eye">
+                    <div class="eyeLid"></div>
+                    <div class="eyeBall">
+                        <div class="iris"></div>
+                    </div>
+                </header>
+
+                <p id="scandetails">Lemme-See report for:
+                    <b>{{ results['target'] }}</b>
+                    - Created at
+                    {{ results['time'] }}</p>
+                <h2 class="category">IPv4 Address Information</h2>
+                <table>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Open Ports</th>
+                        <th>Tags</th>
+                    </tr>
+                    {% for k, v in results.internetdb.items() %}
+                        <tr>
+                            <td>{{ k }}</td>
+                            <td>
+                                {% if v['ports'] %}
+                                    {% for port in v['ports'] %}
+                                        {{ port }},
+                                    {% endfor %}
+                                {% else %}
+                                    Not Available
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if v['tags'] %}
+                                    {% for tag in v['tags'] %}
+                                        {{ tag }}
+                                    {% endfor %}
+                                {% else %}
+                                    Not Available
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <!-- Hostnames -->
+                <table>
+                    <tr>
+                        <th>Hostnames</th>
+                    </tr>
+                    {% for v in results.internetdb.values() %}
+                        {% if v['hostnames'] %}
+                            {% for hostname in v['hostnames'] %}
+                                <tr>
+                                    <td>{{ hostname }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td>Not Available</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                <!-- Vulnerabilities -->
+                <table>
+                    <tr>
+                        <th>Vulnerabilities</th>
+                    </tr>
+                    {% for v in results.internetdb.values() %}
+                        {% if v['vulns'] %}
+                            {% for vuln in v['vulns'] %}
+                                <tr>
+                                    <td>{{ vuln }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td>Not Available</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+
+                <h2 class="category">Subdomain Information</h2>
+                <div id="subdomain-details">
+                    <p>Total subdomains:
+                        {{ results['subdomain_count'] }}</p>
+                </div>
+                <div id="subdomains">
+                    <ul>
+                        {% if results['subdomains'] %}
+                            {% for sub in results['subdomains'] %}
+                                <li>{{ sub }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>Not Available</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div id="footer">
+                    <p>Report generated with
+                        <a href="https://github.com/t0nyc23/lemme-see" target="_blank">"Lemme-See"</a>
+                        (version 2.0.0) - developed by @t0nyc</p>
+                </div>
+            </div>
+        </body>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Lemme-see"
+version = "2.0.0"
+description = "Osint Utilities"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "T0nyc", email = "t0nyc23@proton.me"},
+]
+dependencies = [
+    "beautifulsoup4==4.12.3",
+    "dnspython==2.6.1",
+    "Jinja2==3.1.4",
+    "requests==2.32.3"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/t0nyc23/lemme-see"
+
+[project.scripts]
+lemmeC = "lemmeC.__main__:main"
